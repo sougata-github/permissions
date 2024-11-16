@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { WebhookEvent } from "@clerk/nextjs/server";
+import { clerkClient, WebhookEvent } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
   const headerPayload = await headers();
@@ -34,10 +34,17 @@ export async function POST(req: Request) {
     });
   }
 
-  const { id } = event.data;
-  const eventType = event.type;
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
-  console.log("Webhook payload:", body);
+  const clerk = await clerkClient();
+
+  switch (event.type) {
+    case "user.created": {
+      await clerk.users.updateUser(event.data.id, {
+        publicMetadata: {
+          roles: ["user"],
+        },
+      });
+    }
+  }
 
   return new Response("Webhook received", { status: 200 });
 }
