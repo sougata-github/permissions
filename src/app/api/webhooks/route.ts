@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     case "user.created": {
       await clerk.users.updateUser(event.data.id, {
         publicMetadata: {
-          roles: ["user"],
+          role: ["user"],
         },
       });
       break;
