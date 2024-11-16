@@ -5,16 +5,21 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { hasPermission, Role } from "@/lib/auth";
+import { hasPermission } from "@/lib/auth";
 import { auth } from "@clerk/nextjs/server";
 import { Trash } from "lucide-react";
-
-const user: { id: string; role: Role } = { id: "1", role: "user" };
+import { redirect } from "next/navigation";
 
 const authorId = "1";
 
 export default async function Home() {
-  const { sessionClaims } = await auth();
+  const { sessionClaims, userId } = await auth();
+
+  if (userId === null || sessionClaims === null) {
+    redirect("/sign-in");
+  }
+
+  const user = { id: userId, role: sessionClaims.role };
 
   return (
     <div className="cotainer mx-auto px-4 my-6">
@@ -23,15 +28,15 @@ export default async function Home() {
       <Card>
         <CardHeader>Comment</CardHeader>
         <CardContent>Some random comment</CardContent>
-        {hasPermission(user, "delete:comments") ||
+        {(hasPermission(user, "delete:comments") ||
           (hasPermission(user, "delete:ownComments") &&
-            user.id === authorId && (
-              <CardFooter>
-                <Button variant="destructive">
-                  delete <Trash className="text-white size-4" />
-                </Button>
-              </CardFooter>
-            ))}
+            user.id === authorId)) && (
+          <CardFooter>
+            <Button variant="destructive">
+              delete <Trash className="text-white size-4" />
+            </Button>
+          </CardFooter>
+        )}
       </Card>
     </div>
   );
