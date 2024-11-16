@@ -23,8 +23,10 @@ const ROLES = {
 } as const;
 
 export function hasPermission(
-  user: { id: string; role: Role },
+  user: { id: string; roles: Role[] },
   permission: Permission
 ) {
-  return (ROLES[user.role] as readonly Permission[]).includes(permission);
+  return user.roles.some((role) =>
+    (ROLES[role] as readonly Permission[]).includes(permission)
+  );
 }

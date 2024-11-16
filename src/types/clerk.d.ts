@@ -4,6 +4,6 @@ export {};
 
 declare global {
   interface CustomJwtSessionClaims {
-    role: Role;
+    roles: Role[];
   }
 }

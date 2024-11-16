@@ -19,11 +19,11 @@ export default async function Home() {
     redirect("/sign-in");
   }
 
-  const user = { id: userId, role: sessionClaims.role };
+  const user = { id: userId, roles: sessionClaims.roles };
 
   return (
     <div className="cotainer mx-auto px-4 my-6">
-      <div className="my-4">{sessionClaims?.role || "not signed in!"}</div>
+      <div className="my-4">{sessionClaims?.roles || "not signed in!"}</div>
 
       <Card>
         <CardHeader>Comment</CardHeader>
