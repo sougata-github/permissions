@@ -1,4 +1,4 @@
-import { Role } from "@/lib/auth";
+import { Role } from "@/lib/rbac";
 
 export {};
 
