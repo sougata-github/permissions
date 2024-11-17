@@ -55,13 +55,13 @@ const page = async () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6 overflow-x-hidden">
       <h1 className="text-xl font-semibold mb-4">
         User Info: <span>id = {user.id}</span>,{" "}
         <span>role = {user.roles.join(", ")}</span>
       </h1>
 
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-wrap gap-4 mb-4">
         <GeneralButtonCheck resource="todos" action="view" user={user} />
         <GeneralButtonCheck resource="todos" action="create" user={user} />
         <GeneralButtonCheck resource="todos" action="update" user={user} />
